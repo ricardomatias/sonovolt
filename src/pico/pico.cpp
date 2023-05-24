@@ -1,7 +1,10 @@
 #include "sonovolt/pico.h"
 #include "hardware/pwm.h"
 
-uint32_t pwm_set_freq_duty(uint slice_num, uint chan, uint32_t hz, int duty) {
+namespace sonovolt {
+namespace pico {
+    
+uint32_t pwm_set_freq_duty(uint8_t slice_num, uint8_t chan, uint32_t hz, uint8_t duty) {
     // 125mhz
     uint32_t clock = 125000000;
     uint32_t divider16 = (clock + hz * 2048) / (hz * 4096);
@@ -19,3 +22,6 @@ uint32_t pwm_set_freq_duty(uint slice_num, uint chan, uint32_t hz, int duty) {
 
     return wrap * duty / 100;
 }
+} // namespace pico
+
+} // namespace sonovolt
