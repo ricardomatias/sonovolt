@@ -1,9 +1,10 @@
 #include "sonovolt/common/math.h"
+#include "pico/platform.h"
 
-namespace sonovolt {
-namespace math {
+namespace sonovolt::math {
 
-int map(int s, int a1, int a2, int b1, int b2) { return b1 + (s - a1) * (b2 - b1) / (a2 - a1); }
+template <typename T> T map(T s, T a1, T a2, T b1, T b2) { return b1 + (s - a1) * (b2 - b1) / (a2 - a1); }
+template <typename T> T clamp(T v, T min, T max) { return MAX(MIN(max, v), v); }
+template uint8_t clamp(uint8_t v, uint8_t min, uint8_t max);
 
-} // namespace math
 } // namespace sonovolt

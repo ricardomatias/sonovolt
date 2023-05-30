@@ -1,58 +1,61 @@
-# cmake_minimum_required(VERSION 3.26)
+# cmake_minimum_required(VERSION 3.20)
 
-# project(
-#     sonovolt 
-#     VERSION 0.1
-#     LANGUAGES CXX C ASM
-# )
+# project(SONOVOLT VERSION 0.1.0 LANGUAGES CXX)
 
-set(MAKE_EXPORT_COMPILE_COMMANDS ON)
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 set(LIB_NAME sonovolt)
-message(STATUS "Configuring ${LIB_NAME}")
 set(SONOVOLT_INCLUDE ${CMAKE_CURRENT_LIST_DIR}/include/sonovolt)
-message(STATUS "INCLUDE: ${SONOVOLT_INCLUDE}")
+message(STATUS "Configuring ${LIB_NAME}")
+message(STATUS "${LIB_NAME} include path: ${SONOVOLT_INCLUDE}")
 
-add_library( ${LIB_NAME} STATIC)
+# set lib alias
+add_library(${LIB_NAME} STATIC)
+# add_library(SONOVOLT::sonovolt STATIC ALIAS ${LIB_NAME})
 
 target_compile_features(${LIB_NAME} PUBLIC cxx_std_17)
 
+# target_compile_definitions(${LIB_NAME} 
+#     PRIVATE 
+#         PICO_FLOAT_SUPPORT_ROM_V1 = 0
+#         PICO_DOUBLE_SUPPORT_ROM_V1 = 0
+# )
+
 target_sources(${LIB_NAME}
     PRIVATE
+        ${CMAKE_CURRENT_LIST_DIR}/src/time/transport.cpp
         ${CMAKE_CURRENT_LIST_DIR}/src/common/math.cpp
         ${CMAKE_CURRENT_LIST_DIR}/src/common/time.cpp
-        ${CMAKE_CURRENT_LIST_DIR}/src/pico/pico.cpp
+        ${CMAKE_CURRENT_LIST_DIR}/src/pico/pwm.cpp
+        ${CMAKE_CURRENT_LIST_DIR}/src/pico/output.cpp
+        ${CMAKE_CURRENT_LIST_DIR}/src/pico/tempo_clock.cpp
 )
 
 target_include_directories(${LIB_NAME} PUBLIC ${CMAKE_CURRENT_LIST_DIR}/include)
 
-target_link_libraries(${LIB_NAME} PUBLIC hardware_pwm)
+target_link_libraries(${LIB_NAME} 
+    PUBLIC
+        pico_time
+        pico_divider
+        pico_printf
+        hardware_pwm
+        hardware_timer
+        hardware_gpio
+        pw_function
+)
 
+# set(TEST_EXE ${LIB_NAME}_test)
 
-# set(MAKE_EXPORT_COMPILE_COMMANDS ON)
-# set(CMAKE_CXX_STANDARD 20)
-# set(CMAKE_CXX_STANDARD_REQUIRED ON)
-# # Let's ensure -std=c++xx instead of -std=g++xx
-# set(CMAKE_CXX_EXTENSIONS OFF)
+# add_executable(${TEST_EXE} EXCLUDE_FROM_ALL ${CMAKE_CURRENT_LIST_DIR}/test/time.cpp)
 
-# set(CMAKE_CXX_VISIBILITY_PRESET hidden)
-# set(CMAKE_VISIBILITY_INLINES_HIDDEN 1)
+# target_compile_features(${TEST_EXE} PRIVATE cxx_std_17)
 
-
-# add_library(sonovolt::sonovolt ALIAS ${LIB_NAME})
-
-# set_target_properties(${PROJECT_NAME} PROPERTIES DEBUG_POSTFIX "d")
-
-# add_library(
-#     ${LIB_NAME}
-#     STATIC
-#     # Headers
-#     ${BASE_INCLUDE}/common/math.h
-#     ${BASE_INCLUDE}/common/time.h
-#     ${BASE_INCLUDE}/pico.h
-
-#     # Sources
-#     ${CMAKE_CURRENT_LIST_DIR}/src/common/math.cpp
-#     ${CMAKE_CURRENT_LIST_DIR}/src/common/time.cpp
-#     ${CMAKE_CURRENT_LIST_DIR}/src/pico/pico.cpp
+# find_path(DOCTEST_INCLUDE_DIR NAMES doctest.h PATH_SUFFIXES doctest)
+# message(STATUS "doctest include path: ${DOCTEST_INCLUDE_DIR}")
+# target_include_directories(${TEST_EXE} 
+#     PRIVATE 
+#         ${DOCTEST_INCLUDE_DIR}
+#         ${CMAKE_CURRENT_LIST_DIR}/include
 # )
+
+# target_link_libraries(${TEST_EXE} PRIVATE doctest::doctest)

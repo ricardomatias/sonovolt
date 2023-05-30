@@ -1,10 +1,9 @@
-#include "sonovolt/pico.h"
+#include "sonovolt/pico/pwm.h"
 #include "hardware/pwm.h"
 
-namespace sonovolt {
-namespace pico {
-    
-uint32_t pwm_set_freq_duty(uint8_t slice_num, uint8_t chan, uint32_t hz, uint8_t duty) {
+namespace sonovolt::pico {
+
+[[nodiscard]] uint32_t pwm_init_freq(uint8_t slice_num, uint8_t chan, uint32_t hz, bool run) {
     // 125mhz
     uint32_t clock = 125000000;
     uint32_t divider16 = (clock + hz * 2048) / (hz * 4096);
@@ -18,10 +17,9 @@ uint32_t pwm_set_freq_duty(uint8_t slice_num, uint8_t chan, uint32_t hz, uint8_t
     // Set divider, reduces counter clock to sysclock/this value
     pwm_config_set_clkdiv_int_frac(&config, divider16 / 16, divider16 & 0xF);
     pwm_config_set_wrap(&config, wrap);
-    pwm_init(slice_num, &config, true);
+    // pwm starts running when configured
+    pwm_init(slice_num, &config, run);
 
-    return wrap * duty / 100;
+    return wrap;
 }
-} // namespace pico
-
-} // namespace sonovolt
+} // namespace sonovolt::pico
