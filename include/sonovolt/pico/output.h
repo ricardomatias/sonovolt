@@ -11,10 +11,10 @@
 namespace sonovolt::pico {
 class Output {
   private:
+    uint32_t wrap_count_;
     uint8_t pin_;
     uint8_t slice_num_;
     uint8_t slice_channel_;
-    uint32_t wrap_count_;
 
   public:
     Output(uint8_t pin);

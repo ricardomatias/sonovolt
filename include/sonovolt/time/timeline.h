@@ -4,12 +4,16 @@
 
 #include "../types.h"
 
+struct TimelineEvent {
+
+};
+
 class Timeline
 {
 private:
     u64 playhead = 0;
 public:
-    Timeline(/* args */);
+    Timeline();
     ~Timeline();
 
     void insertAt();
