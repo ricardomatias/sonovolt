@@ -3,8 +3,8 @@
 #ifndef SONOVOLT_GLOBALS_H
 #define SONOVOLT_GLOBALS_H
 
-#include "sonovolt/pico/tempo_clock.h"
+#include "sonovolt/rp2040/tempo_clock.h"
 
-sonovolt::pico::TempoClock *globalTempoClock = nullptr;
+sonovolt::rp2040::TempoClock *globalTempoClock = nullptr;
 
 #endif // SONOVOLT_GLOBALS_H

@@ -1,6 +1,6 @@
 #include "sonovolt/time/transport.h"
 
-namespace sonovolt::pico {
+namespace sonovolt {
 
 void Transport::init() {
 

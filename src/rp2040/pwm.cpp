@@ -1,7 +1,7 @@
-#include "sonovolt/pico/pwm.h"
+#include "sonovolt/rp2040/pwm.h"
 #include "hardware/pwm.h"
 
-namespace sonovolt::pico {
+namespace sonovolt::rp2040 {
 
 [[nodiscard]] uint32_t pwm_init_freq(uint8_t slice_num, uint8_t chan, uint32_t hz, bool run) {
     // 125mhz

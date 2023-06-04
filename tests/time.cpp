@@ -3,8 +3,8 @@
 #define DOCTEST_CONFIG_NO_POSIX_SIGNALS
 #define DOCTEST_CONFIG_NO_MULTITHREADING
 #define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
+#include "doctest/doctest.h"
 #include "sonovolt/common/time.h"
-#include "doctest.h"
 
 int factorial(int number) { return number <= 1 ? number : factorial(number - 1) * number; }
 

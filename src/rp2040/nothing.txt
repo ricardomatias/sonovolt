@@ -1,0 +1,71 @@
+if(SONOVOLT_TOP_LEVEL)
+    cmake_minimum_required(VERSION 3.26)
+
+    include(${CMAKE_CURRENT_LIST_DIR}/cmake/pico_sdk_import.cmake)
+
+    project(sonovolt_pico CXX C ASM)
+
+    set(CMAKE_C_STANDARD 11)
+    set(CMAKE_CXX_STANDARD 17)
+    set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+
+    pico_sdk_init()
+    add_library(sonovolt_pico STATIC)
+
+    target_compile_features(sonovolt_pico PUBLIC cxx_std_17)
+
+    target_include_directories(sonovolt_pico
+        PRIVATE
+
+        # where the library itself will look for its internal headers
+        ${CMAKE_CURRENT_SOURCE_DIR}/include
+        PUBLIC
+        $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+        $<INSTALL_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/../include>
+    )
+
+    target_link_libraries(sonovolt_pico
+        PUBLIC
+        pico_time
+        pico_divider
+        pico_printf
+        hardware_pwm
+        hardware_timer
+        hardware_gpio
+    )
+
+    install(TARGETS sonovolt_pico
+        EXPORT sonovolt_picoTargets
+        LIBRARY DESTINATION lib
+        ARCHIVE DESTINATION lib
+        RUNTIME DESTINATION bin
+        PUBLIC_HEADER DESTINATION include
+        INCLUDES DESTINATION include
+    )
+else()
+    set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+
+    add_library(sonovolt_pico INTERFACE)
+
+    target_include_directories(sonovolt_pico
+        INTERFACE
+        ${CMAKE_CURRENT_SOURCE_DIR}/include
+    )
+
+    target_link_libraries(sonovolt_pico
+        INTERFACE
+        sonovolt
+        pico_time
+        pico_divider
+        pico_printf
+        hardware_pwm
+        hardware_timer
+        hardware_gpio
+    )
+endif()
+
+# install(EXPORT sonovolt_picoTargets
+# FILE sonovolt_picoTargets.cmake
+# NAMESPACE sonovolt_pico::
+# DESTINATION lib/cmake/sonovolt_pico
+# )

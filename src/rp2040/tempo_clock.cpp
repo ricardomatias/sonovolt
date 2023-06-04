@@ -1,16 +1,14 @@
-#include "sonovolt/pico/tempo_clock.h"
+#include "sonovolt/rp2040/tempo_clock.h"
 #include "hardware/gpio.h"
 #include "hardware/pwm.h"
 #include "pico/printf.h"
-#include "pw_function/function.h"
-#include "pw_function/pointer.h"
 #include "sonovolt/common/time.h"
-#include "sonovolt/pico/pwm.h"
+#include "sonovolt/rp2040/pwm.h"
 #include <utility>
 
-void irq_handler() { sonovolt::pico::TempoClock::dirtyTick(); }
+void irq_handler() { sonovolt::rp2040::TempoClock::dirtyTick(); }
 
-namespace sonovolt::pico {
+namespace sonovolt::rp2040 {
 
 TempoClock::~TempoClock() {
     pwm_set_enabled(slice_num_, false);
@@ -39,13 +37,20 @@ void TempoClock::init() {
     irq_set_exclusive_handler(PWM_IRQ_WRAP, irq_handler);
     irq_set_enabled(PWM_IRQ_WRAP, true);
 
-    pin_level_ = pwm_init_freq(slice_num_, slice_channel_, static_cast<u32>(time::bpm_to_hz(bpm_) * static_cast<float>(PPQN_)));
+    pin_level_ = pwm_init_freq(slice_num_, slice_channel_, static_cast<u32>(time::bpm_to_hz(bpm_) * static_cast<float>(PPQN_)), false);
 
     is_running_ = true;
 
 #ifdef DEBUG
     printf("TempoClock::init() slice_num_=%d\n", slice_num_);
 #endif
+}
+void TempoClock::start() {
+    pwm_set_enabled(slice_num_, true);
+}
+
+void TempoClock::stop() {
+    pwm_set_enabled(slice_num_, false);
 }
 
 extern "C" void TempoClock::dirtyTick() {
@@ -54,12 +59,12 @@ extern "C" void TempoClock::dirtyTick() {
     if (mySelf == nullptr) return;
 
     // call member
-    mySelf->tick();
+    if (mySelf->isRunning()) mySelf->tick();
 }
 
-void TempoClock::onTick(pw::Function<void(u64)> &&callback) {
-    on_tick_cb = std::move(callback);
-    has_on_tick_cb = true;
+void TempoClock::onTick(TempoClock::Callback &&callback) {
+    on_tick_cb_ = std::move(callback);
+    has_on_tick_cb_ = true;
 };
 
 void TempoClock::tick() {
@@ -83,7 +88,7 @@ void TempoClock::tick() {
         pwm_set_gpio_level(pin_, 0);
     }
 
-    if (has_on_tick_cb) on_tick_cb(ticker_);
+    if (has_on_tick_cb_) on_tick_cb_(ticker_);
 
     ticker_++;
     previous_tick_us_ = get_absolute_time();

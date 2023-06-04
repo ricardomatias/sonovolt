@@ -5,10 +5,10 @@
 #include "hardware/gpio.h"
 #include "hardware/pwm.h"
 #include "sonovolt/common/math.h"
-#include "sonovolt/pico/pwm.h"
+#include "sonovolt/rp2040/pwm.h"
 #include <cstdint>
 
-namespace sonovolt::pico {
+namespace sonovolt::rp2040 {
 class Output {
   private:
     uint32_t wrap_count_;

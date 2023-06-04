@@ -4,7 +4,7 @@
 
 #include <stdint.h>
 
-namespace sonovolt::pico {
+namespace sonovolt::rp2040 {
 /**
  * @brief Initializes a PWM channel with a given frequency.
  *

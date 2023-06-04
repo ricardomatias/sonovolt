@@ -2,14 +2,15 @@
 #ifndef __SONOVOLT_PICO_TEMPO_CLOCK_H__
 #define __SONOVOLT_PICO_TEMPO_CLOCK_H__
 
-#include "../types.h"
 #include "pico/time.h"
-#include "pw_function/function.h"
+#include "../types.h"
 
-namespace sonovolt::pico {
+namespace sonovolt::rp2040 {
 
 class TempoClock {
   private:
+    typedef void (*Callback)(u64);
+
     u64 ticker_ = 0;
     u64 ticks_next_ = PPQN_;
 
@@ -28,9 +29,9 @@ class TempoClock {
     u16 PPQN_ = 960;
 
     bool is_running_ = false;
-    bool has_on_tick_cb = false;
-    pw::Function<void(u64)> on_tick_cb;
+    bool has_on_tick_cb_ = false;
 
+    Callback on_tick_cb_;
   public:
     TempoClock(u8 pin) : pin_(pin) {}
     TempoClock(u8 pin, u8 bpm) : pin_(pin), bpm_(bpm) {}
@@ -39,6 +40,9 @@ class TempoClock {
 
     void init();
 
+    void start();
+    void stop();
+
     u64 getTicks();
     u8 getBPM();
     bool isRunning();
@@ -46,13 +50,13 @@ class TempoClock {
     void tick();
     void setBPM(u8 tempo);
 
-    void onTick(pw::Function<void(u64)> &&callback);
+    void onTick(Callback &&callback);
 
     static void dirtyTick();
 };
 } // namespace sonovolt::pico
 
 // A global variable to allow having a callback called from an PWM IRQ which has access to the TempoClock instance
-extern sonovolt::pico::TempoClock *globalTempoClock;
+extern sonovolt::rp2040::TempoClock *globalTempoClock;
 
 #endif // __SONOVOLT_PICO_TEMPO_CLOCK_H__

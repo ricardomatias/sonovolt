@@ -1,10 +1,10 @@
-#include "sonovolt/pico/output.h"
+#include "sonovolt/rp2040/output.h"
 
 const uint8_t MAX_VOLTAGE = 10;
 const uint8_t MIN_VOLTAGE = 0;
 const uint32_t PWM_FREQ = 100000;
 
-namespace sonovolt::pico {
+namespace sonovolt::rp2040 {
 
 Output::Output(uint8_t pin) : pin_(pin) {
     gpio_set_function(pin, GPIO_FUNC_PWM);
