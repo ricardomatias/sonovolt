@@ -37,21 +37,18 @@ void TempoClock::init() {
     irq_set_exclusive_handler(PWM_IRQ_WRAP, irq_handler);
     irq_set_enabled(PWM_IRQ_WRAP, true);
 
-    pin_level_ = pwm_init_freq(slice_num_, slice_channel_, static_cast<u32>(time::bpm_to_hz(bpm_) * static_cast<float>(PPQN_)), false);
+    auto freq = static_cast<u32>(time::bpm_to_hz(bpm_) * static_cast<float>(PPQN_));
+    pin_level_ = pwm_init_freq(slice_num_, slice_channel_, freq, false);
 
     is_running_ = true;
 
 #ifdef DEBUG
-    printf("TempoClock::init() slice_num_=%d\n", slice_num_);
+    printf("TempoClock::init() slice_num_=%d, freq=%u\n", slice_num_, freq);
 #endif
 }
-void TempoClock::start() {
-    pwm_set_enabled(slice_num_, true);
-}
+void TempoClock::start() { pwm_set_enabled(slice_num_, true); }
 
-void TempoClock::stop() {
-    pwm_set_enabled(slice_num_, false);
-}
+void TempoClock::stop() { pwm_set_enabled(slice_num_, false); }
 
 extern "C" void TempoClock::dirtyTick() {
     TempoClock *mySelf = static_cast<TempoClock *>(globalTempoClock);
@@ -105,4 +102,4 @@ uint64_t TempoClock::getTicks() { return ticker_; }
 
 bool TempoClock::isRunning() { return is_running_; }
 
-} // namespace sonovolt::pico
+} // namespace sonovolt::rp2040
