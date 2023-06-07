@@ -65,13 +65,13 @@ else()
         $<INSTALL_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/include>
     )
 
-    target_link_libraries(${LIB_NAME}
-        PUBLIC
-        pico_time
-        pico_divider
-        pico_printf
-        hardware_pwm
-        hardware_timer
-        hardware_gpio
-    )
+    # target_link_libraries(${LIB_NAME}
+    #     PUBLIC
+    #     # pico_time
+    #     # pico_divider
+    #     # pico_printf
+    #     # hardware_pwm
+    #     # hardware_timer
+    #     # hardware_gpio
+    # )
 endif()
