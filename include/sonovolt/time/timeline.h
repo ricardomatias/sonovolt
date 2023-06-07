@@ -71,7 +71,7 @@ template <size_t C, typename T> inline void Timeline<C, T>::logEvents() {
 
     for (size_t i = 0; i < event_count_; i++) {
         auto event = events[i];
-        printf("{start: %llu, end: %llu, data: %u}\n", event.start, event.end, event.data);
+        printf("{start: %llu, end: %llu, data_on: %u, data_off: %u}\n", event.start, event.end, event.data_on, event.data_off);
     }
 
     printf("]\n");

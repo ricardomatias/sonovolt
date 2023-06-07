@@ -3,7 +3,7 @@
 #define __SONOVOLT_PICO_TEMPO_CLOCK_H__
 
 #include "pico/time.h"
-#include "../types.h"
+#include "sonovolt/types.h"
 
 namespace sonovolt::rp2040 {
 

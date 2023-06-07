@@ -53,14 +53,12 @@ else()
         ${CMAKE_CURRENT_SOURCE_DIR}/time/timeline.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/time/transport.cpp
         
-        ${CMAKE_CURRENT_SOURCE_DIR}/rp2040/pwm.cpp
-        ${CMAKE_CURRENT_SOURCE_DIR}/rp2040/output.cpp
-        ${CMAKE_CURRENT_SOURCE_DIR}/rp2040/tempo_clock.cpp
+        # ${CMAKE_CURRENT_SOURCE_DIR}/rp2040/pwm.cpp
+        # ${CMAKE_CURRENT_SOURCE_DIR}/rp2040/output.cpp
+        # ${CMAKE_CURRENT_SOURCE_DIR}/rp2040/tempo_clock.cpp
     )
     target_include_directories(${LIB_NAME}
         PRIVATE
-
-        # where the library itself will look for its internal headers
         ${CMAKE_CURRENT_SOURCE_DIR}
         PUBLIC
         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/../include>
