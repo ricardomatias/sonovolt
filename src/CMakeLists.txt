@@ -17,6 +17,11 @@ if(SONOVOLT_TOP_LEVEL)
         ${CMAKE_CURRENT_SOURCE_DIR}/time/transport.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/common/math.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/common/time.cpp
+
+        ${CMAKE_CURRENT_SOURCE_DIR}/../include/sonovolt/time/transport.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/../include/sonovolt/time/timeline.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/../include/sonovolt/common/math.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/../include/sonovolt/common/time.h
     )
 
     target_include_directories(${LIB_NAME}
@@ -50,12 +55,13 @@ else()
 
         ${CMAKE_CURRENT_SOURCE_DIR}/common/math.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/common/time.cpp
-        ${CMAKE_CURRENT_SOURCE_DIR}/time/timeline.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/time/transport.cpp
-        
-        # ${CMAKE_CURRENT_SOURCE_DIR}/rp2040/pwm.cpp
-        # ${CMAKE_CURRENT_SOURCE_DIR}/rp2040/output.cpp
-        # ${CMAKE_CURRENT_SOURCE_DIR}/rp2040/tempo_clock.cpp
+
+        ${CMAKE_CURRENT_SOURCE_DIR}/../include/sonovolt/time/transport.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/../include/sonovolt/time/timeline.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/../include/sonovolt/common/math.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/../include/sonovolt/common/time.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/../include/sonovolt/types.h
     )
     target_include_directories(${LIB_NAME}
         PRIVATE
@@ -65,13 +71,13 @@ else()
         $<INSTALL_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/include>
     )
 
-    # target_link_libraries(${LIB_NAME}
-    #     PUBLIC
-    #     # pico_time
-    #     # pico_divider
-    #     # pico_printf
-    #     # hardware_pwm
-    #     # hardware_timer
-    #     # hardware_gpio
-    # )
+# target_link_libraries(${LIB_NAME}
+# PUBLIC
+# # pico_time
+# # pico_divider
+# # pico_printf
+# # hardware_pwm
+# # hardware_timer
+# # hardware_gpio
+# )
 endif()

@@ -18,8 +18,8 @@ namespace sonovolt::rp2040 {
 
     pwm_config config = pwm_get_default_config();
 
-    printf("pwm_init_freq: slice_num=%d, chan=%d, hz=%d, divider16=%d, wrap=%d, integer=%d, fraction=%d\n", slice_num, chan, hz,
-           divider16, wrap, integer, fraction);
+    // printf("pwm_init_freq: slice_num=%d, chan=%d, hz=%d, divider16=%d, wrap=%d, integer=%d, fraction=%d\n", slice_num, chan, hz,
+    //        divider16, wrap, integer, fraction);
     // Set divider, reduces counter clock to sysclock/this value
     pwm_config_set_clkdiv_int_frac(&config, integer, fraction);
     pwm_config_set_wrap(&config, wrap);

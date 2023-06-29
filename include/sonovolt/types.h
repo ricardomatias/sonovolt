@@ -3,6 +3,7 @@
 #define SONOVOLT_TYPES_H
 
 #include <cstdint>
+#include <cstddef>
 
 typedef __uint8_t u8;
 typedef __uint16_t u16;

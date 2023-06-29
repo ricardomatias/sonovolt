@@ -1,6 +1,6 @@
 #pragma once
-#ifndef SONOVOLT_PICO_H
-#define SONOVOLT_PICO_H
+#ifndef SONOVOLT_PICO_PWM_H
+#define SONOVOLT_PICO_PWM_H
 
 #include <stdint.h>
 

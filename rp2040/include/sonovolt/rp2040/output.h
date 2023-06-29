@@ -8,20 +8,22 @@
 #include "sonovolt/rp2040/pwm.h"
 #include <cstdint>
 
-namespace sonovolt::rp2040 {
-class Output {
+namespace sonovolt::rp2040
+{
+class Output
+{
   private:
     uint32_t wrap_count_;
-    uint8_t pin_;
+    uint pin_;
     uint8_t slice_num_;
     uint8_t slice_channel_;
 
   public:
-    Output(uint8_t pin);
+    Output(uint pin);
     ~Output();
 
     void voltage(uint8_t voltage);
 };
-} // namespace sonovolt::pico
+} // namespace sonovolt::rp2040
 
 #endif
