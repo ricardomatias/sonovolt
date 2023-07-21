@@ -24,21 +24,6 @@ T map(T s, T a1, T a2, T b1, T b2)
 }
 
 /**
- * Clamps the given value between the minimum and maximum values.
- *
- * @param v The value to clamp.
- * @param min The minimum value to clamp to.
- * @param max The maximum value to clamp to.
- * @return The clamped value.
- */
-template <typename T>
-T clamp(T v, T min, T max)
-{
-    static_assert(std::is_integral<T>::value, "Must be a number.");
-    return MAX(MIN(max, v), v);
-}
-
-/**
  * Calculates the number of leading zeros in a binary representation of a number.
  *
  * @param number The number to calculate the leading zeros for.
@@ -86,6 +71,12 @@ T min(T a, T b)
 {
     static_assert(std::is_integral<T>::value, "Must be a number.");
     return a < b ? a : b;
+}
+
+template <typename T>
+int sign(T val)
+{
+    return (T(0) < val) - (val < T(0));
 }
 
 

@@ -8,10 +8,11 @@ class Knob
 {
 private:
     /* data */
-    uint8_t pin_;
-    float prev_ = 0.f;
-    float current_ = 0.f;
-
+    uint8_t pin_{0};
+    uint16_t prev_{0};
+    uint16_t current_{0};
+    // 32 / 4096  -> 0.78%
+    uint16_t change_threshold_{(1 << 5)};
 public:
     const float voltage_factor = 3.3f / (1 << 12);
 
@@ -31,14 +32,16 @@ public:
         read();
     }
 
-    float read()
+    uint16_t read()
     {
         prev_ = current_;
         current_ = readRaw();
         return current_;
     }
 
-    bool changed() { return abs(current_ - prev_) > 1e-2f; }
+    bool changed() { return abs(current_ - prev_) > change_threshold_; }
+
+    void setChangeThreshold(uint16_t threshold) { change_threshold_ = threshold; }
 
     void prepare()
     {

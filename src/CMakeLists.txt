@@ -60,6 +60,7 @@ else()
         ${CMAKE_CURRENT_SOURCE_DIR}/../include/sonovolt/time/transport.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../include/sonovolt/time/timeline.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../include/sonovolt/common/math.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/../include/sonovolt/common/bit.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../include/sonovolt/common/time.h
         ${CMAKE_CURRENT_SOURCE_DIR}/../include/sonovolt/types.h
     )

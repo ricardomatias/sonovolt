@@ -1,10 +1,5 @@
 #include "sonovolt/rp2040/tempo_clock.h"
-#include "hardware/gpio.h"
-#include "hardware/pwm.h"
-#include "pico/printf.h"
-#include "sonovolt/common/time.h"
-#include "sonovolt/rp2040/pwm.h"
-#include <utility>
+
 
 void tick_irq_handler()
 {
@@ -29,7 +24,8 @@ TempoClock::~TempoClock()
 #endif
 }
 
-void TempoClock::update(bool run = true) {
+void TempoClock::update(bool run = true)
+{
     auto freq = static_cast<u32>(time::bpm_to_hz(bpm_) * static_cast<float>(PPQN_));
     pin_level_ = pwm_init_freq(slice_num_, slice_channel_, freq, run);
 
@@ -64,6 +60,7 @@ void TempoClock::start()
 
 void TempoClock::stop()
 {
+    pwm_clear_irq(slice_num_);
     pwm_set_enabled(slice_num_, false);
 
     is_running_ = false;
@@ -124,9 +121,10 @@ void TempoClock::tick()
     // previous_tick_us_ = get_absolute_time();
 }
 
-void TempoClock::setBPM(u8 tempo)
+void TempoClock::
+setBPM(u8 tempo)
 {
-    if (tempo == bpm_)
+    if(tempo == bpm_)
         return;
 
     stop();
@@ -136,17 +134,22 @@ void TempoClock::setBPM(u8 tempo)
 
     bpm_ = tempo;
 
-    update();
+    update(false);
 
     start();
 }
 
-uint64_t TempoClock::getTicks()
+uint64_t TempoClock::getTicks() const
 {
     return ticker_;
 }
 
-bool TempoClock::isRunning()
+u8 TempoClock::getBPM() const
+{
+    return bpm_;
+}
+
+bool TempoClock::isRunning() const
 {
     return is_running_;
 }
