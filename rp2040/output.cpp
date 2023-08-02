@@ -7,7 +7,6 @@ const uint32_t PWM_FREQ = 100000_u32;
 namespace sonovolt::rp2040
 {
 
-Output::Output(uint pin) : pin_(pin) {}
 Output::~Output()
 {
     gpio_deinit(pin_);

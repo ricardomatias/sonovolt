@@ -90,28 +90,13 @@ private:
     module gets a copy. */
     void writeWordToChain(uint8_t hi, uint8_t lo);
 
-    /** Set the number of "virtual modules" in the display chain. This can be
-      any length (subject to memory), but it makes little sense to set
-      this smaller than the actual display. The purpose of setting the
-      virtual length is to be able to write content that will not fit
-      onto the physical display, and then call scroll() to bring it 
-      into view. By default, the virtual chain length is the same as
-      the predefined maximum physical chain length, that is, 8 modules. 
-      If you don't plan to use the scrolling function, you can save a
-      little memory by setting the virtual chain length to the actual
-      chain length. But we're talking bytes here. */
-    void setVirtualChainLength(int chain_len);
-
     /** Clean up the library. If "deinit" is TRUE, the corresponding SPI
     channel in the Pico is deinitialized. In either case, set the 
     display hardware to the low-power standby mode. */
     void destroy(bool deinit);
 
 public:
-    Max7219(enum PicoSpiNum spi_num,
-            uint8_t cs,
-            uint8_t chain_len,
-            bool reverse_bits)
+    Max7219(enum PicoSpiNum spi_num, uint8_t cs, uint8_t chain_len, bool reverse_bits)
     : spi_num_(spi_num),
       cs_(cs),
       chain_len_(chain_len),
@@ -192,6 +177,50 @@ public:
     writing to the device. This function will only write the start
     of the virtual chain, if it is longer than the physical chain. */
     void vrowToVrow(size_t row);
+
+    // Draw a character to the library. Note that the width of the "virtual
+    // display" can be much longer than the physical module chain, and
+    // off-display elements can later be scrolled into view. However, it's
+    // the job of the application, not the library, to size the virtual
+    // display sufficiently to fit all the text in.
+    //
+    // chr is an offset in the font table, which starts with character 32 (space).
+    // It isn't an ASCII character.
+    void drawCharacter(uint8_t chr, int x_offset, bool shouldFlush = false);
+
+    // Get the number of horizontal pixels that a string will take. Since each
+    // font element is five pixels wide, and there is one pixel between each
+    // character, we just multiply the string length by 6.
+    size_t getStringLengthPixels(const char *s);
+
+    // Get the number of 8x8 LED modules that would be needed to accomodate the
+    // string of text. That's the number of pixels divided by 8 (the module
+    // width), and then one added to round up.
+    uint8_t getStringLengthModules(const char *s);
+
+    // Draw a string of text on the (virtual) display. This function assumes
+    // that the library has already been configured to provide a virtual
+    // chain of LED modules that is long enough to fit all the text onto.
+    void drawString(const char *s, int index, bool shouldFlush);
+
+    /** Set the number of "virtual modules" in the display chain. This can be
+      any length (subject to memory), but it makes little sense to set
+      this smaller than the actual display. The purpose of setting the
+      virtual length is to be able to write content that will not fit
+      onto the physical display, and then call scroll() to bring it 
+      into view. By default, the virtual chain length is the same as
+      the predefined maximum physical chain length, that is, 8 modules. 
+      If you don't plan to use the scrolling function, you can save a
+      little memory by setting the virtual chain length to the actual
+      chain length. But we're talking bytes here. */
+    void setVirtualChainLength(int chain_len);
+
+    // Show a string of characters, and then scroll it across the display.
+    // This function uses pico7219_set_virtual_chain_length() to ensure that
+    // there are enough "virtual" modules in the display chain to fit
+    // the whole string. It then scrolls it enough times to scroll the
+    // whole string right off the end.
+    void showTextAndScroll(const char *string);
 };
 
 } // namespace sonovolt::rp2040

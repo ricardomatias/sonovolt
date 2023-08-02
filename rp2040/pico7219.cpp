@@ -20,6 +20,7 @@
 #include "hardware/gpio.h"
 
 #include "sonovolt/rp2040/pico7219.h"
+#include "sonovolt/rp2040/font_8.h"
 #include "sonovolt/common/bit.h"
 
 namespace sonovolt::rp2040
@@ -28,10 +29,10 @@ namespace sonovolt::rp2040
 #define PICO7219_INTENSITY_REG 0x0A
 #define PICO7219_SHUTDOWN_REG 0x0C
 
-// An opaque data structure that holds the information relevant to the
-//   library. Users of the library do not see this, or need to.
 void Max7219::setChipSelect(uint8_t select)
 {
+    // This is likely done to add a small delay to the function,
+    // which can help ensure that the chip select pin is set correctly.
     asm volatile("nop \n nop \n nop");
     gpio_put(cs_, select);
     asm volatile("nop \n nop \n nop");
@@ -265,6 +266,52 @@ void Max7219::scroll(bool wrap)
         setRowBits(row, vdata_ + row * vchain_len_);
     }
 }
+
+void Max7219::drawCharacter(uint8_t chr, int x_offset, bool shouldFlush)
+{
+    for(int i = 0; i < 8; i++) // row
+    {
+        // The font elements are one byte wide even though, as its an 8x5 font,
+        //   only the top five bits of each byte are used.
+        uint8_t v = rp2040::font8::kTable[8 * chr + i];
+        
+        for(int j = 0; j < 8; j++) // column
+        {
+            int sel = 1 << j;
+            
+            if(sel & v)
+                switchOn(7 - i, 7 - j + x_offset, false);
+        }
+    }
+
+    if(shouldFlush)
+        flush();
+}
+
+
+void Max7219::drawString(const char *s, int index, bool shouldFlush)
+{
+    int x = index;
+    while(*s)
+    {
+        drawCharacter(*s - ' ', x, false);
+        s++;
+        x += 7;
+    }
+    if(shouldFlush)
+        flush();
+}
+
+size_t Max7219::getStringLengthPixels(const char *s)
+{
+    return strlen(s) * 7;
+}
+
+uint8_t Max7219::getStringLengthModules(const char *s)
+{
+    return getStringLengthPixels(s) / 8 + 1;
+}
+
 
 void Max7219::flush()
 {

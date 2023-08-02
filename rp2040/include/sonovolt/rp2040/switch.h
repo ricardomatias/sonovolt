@@ -38,6 +38,8 @@ public:
     void init();
     void debounce(uint32_t debounceTimeMs = 1);
 
+    inline bool readRaw() { return readGpio() && !pull_up_; }
+
     inline bool pressed() const { return state_ == 0xff; }
 
     inline bool risingEdge() const { return updated_ ? state_ == 0x7f : false; }
