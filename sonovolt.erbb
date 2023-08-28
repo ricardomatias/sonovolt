@@ -1,0 +1,14 @@
+/*****************************************************************************
+
+      SONOVOLT
+
+*Tab=3***********************************************************************/
+
+base ".."
+
+sources {
+    file "include/sonovolt/common/math.cpp"
+    file "src/common/math.cpp"
+    file "include/sonovolt/common/time.cpp"
+    file "src/common/time.cpp"
+}
