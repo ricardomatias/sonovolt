@@ -1,10 +1,11 @@
 #pragma once
 
+#include "encoder.pio.h"
 #include "hardware/pio.h"
 #include "pico/printf.h"
-#include <cmath>
-#include "sonovolt/types.h"
 #include "sonovolt/common/math.h"
+#include "sonovolt/types.h"
+#include <cmath>
 
 namespace sonovolt::rp2040
 {

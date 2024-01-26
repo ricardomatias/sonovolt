@@ -6,8 +6,6 @@
 #include <utility>
 #include "pico/stdlib.h"
 #include "pico/printf.h"
-#include "etl/delegate.h"
-#include "etl/delegate_service.h"
 
 namespace sonovolt::rp2040
 {

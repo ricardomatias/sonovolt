@@ -1,5 +1,4 @@
 #include "sonovolt/rp2040/encoder.h"
-#include "encoder.pio.h"
 
 namespace sonovolt::rp2040
 {

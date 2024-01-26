@@ -30,7 +30,6 @@
 #include "hardware/pio.h"
 #include "hardware/clocks.h"
 
-#include "debounce.pio.h"
 #include "sonovolt/rp2040/debounce.h"
 
 // indicate if errors and warnings should print a message
