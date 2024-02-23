@@ -15,7 +15,7 @@ private:
     uint32_t rising_edge_time_ = 0u;
     u8 id_ = 0x0;
     u8 gpio_ = 0x0;
-    u8 state_ = 0x00;
+    u8 state_ = 0x0;
     bool updated_ = false;
     bool pull_up_ = false;
     bool prev_state_ = false;
