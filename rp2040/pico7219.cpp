@@ -133,7 +133,7 @@ void Max7219::setRowBits(uint8_t row, const uint8_t bits[PICO7219_MAX_CHAIN])
         uint8_t v = bits[chain_len - i - 1];
         if(reverse_bits_)
             v = sonovolt::bit::reverseBits(v);
-        uint8_t buf[] = {row + 1, v};
+        uint8_t buf[] = {(int)row + 1, v};
         spi_write_blocking(spi_, buf, 2);
     }
     setChipSelect(1);

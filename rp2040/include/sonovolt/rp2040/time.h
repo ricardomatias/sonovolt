@@ -6,7 +6,7 @@
 
 namespace sonovolt::rp2040
 {
-static uint32_t time_ms_32()
+inline static uint32_t time_ms_32()
 {
     return time_us_32() / 1000u;
 }

@@ -101,14 +101,14 @@ int Debounce::debounce_gpio(uint gpio)
     // claim a state machine, no panic if non is available
     uint sm = pio_claim_unused_sm(pio, false);
     // check if this is a valid sm
-    if(sm == -1)
+    if((int)sm == -1)
     {
         // pio0 did not deliver a sm, try pio1
         pio = pio1;
         // claim a state machine, no panic if non is available
         sm = pio_claim_unused_sm(pio, false);
         // check if this is a valid sm
-        if(sm == -1)
+        if((int)sm == -1)
         {
             // also no sm from pio1, return an error
 #ifdef PRINT_ERRORS
@@ -252,7 +252,7 @@ int Debounce::read(uint gpio)
     uint pc = pio_sm_get_pc(pio_debounced[gpio], sm_debounced[gpio]);
     // if it is at or beyond the "wait 0 pin 0" it has value 1, else 0
     // in the pio code a public define called 'border' is set at that position
-    if(pc >= (offset[gpio] + button_debounce_border))
+    if((int)pc >= (offset[gpio] + button_debounce_border))
         return 1;
     else
         return 0;

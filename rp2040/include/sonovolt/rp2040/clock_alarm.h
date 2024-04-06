@@ -38,10 +38,9 @@ private:
   bool is_running_ = false;
   bool has_on_tick_cb_ = false;
 
-  Callback on_tick_cb_;
+  Callback on_tick_cb_ = nullptr;
 
-  void update(bool run);
-
+  void update();
 public:
   ClockAlarm(u8 bpm) : bpm_(bpm) {}
   ClockAlarm(u8 bpm, u16 ppqn) : bpm_(bpm), PPQN_(ppqn) {}
